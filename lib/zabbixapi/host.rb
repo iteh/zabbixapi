@@ -12,6 +12,7 @@ module Zabbix
         'ip' => '0.0.0.0',
         'proxy_hostid' => 0,
         'groups' => [],
+        'templates' => [],
         'useipmi' => 0,
         'ipmi_ip' => '',
         'ipmi_port' => 623,
@@ -22,6 +23,7 @@ module Zabbix
       }
 
       host_options['groups'].map! { |group_id| {'groupid' => group_id} }
+      host_options['templates'].map! { |template_id| {'templateid' => template_id} }
 
       host = merge_opt(host_default, host_options)
 

@@ -89,15 +89,7 @@ module Zabbix
       }
 
       response = send_request(message)
-
-      unless response.empty? then
-        result = response.keys[0]
-      else
-        result = nil
-      end
-
-      return result
-
+      (response.is_a?(Array) && response.first.is_a?(Hash)) ? response.first["templateid"] : nil
     end
 
     def link_templates_with_hosts(templates_id, hosts_id)

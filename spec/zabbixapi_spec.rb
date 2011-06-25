@@ -92,6 +92,65 @@ describe Zabbix::ZabbixApi do
       host.should be_nil
     end
 
+    it "should add a host with groups and templates" do
+      FakeWeb.allow_net_connect = true
+
+      new_host = {
+        "host" => "new host",
+        "ip" => "10.10.10.10",
+        "port" => "10055",
+        "useip" => 1,
+        "dns" => "myhost.com",
+        "groups" => [2],
+        "templates" => [10001]
+      }
+      zbx = Zabbix::ZabbixApi.new(@api_url, @api_login, @api_password)
+
+      new_host_id = zbx.add_host(new_host)
+      new_host_id.should_not be_nil
+
+      created_host = zbx.get_host({"templated_hosts" => 1, "output" => "extend", "filter" => {"dns" => new_host["dns"]}})
+      ap created_host
+    end
+
+  end
+
+  context 'get template' do
+    it "should get a template" do
+      FakeWeb.allow_net_connect = true
+
+      zbx = Zabbix::ZabbixApi.new(@api_url, @api_login, @api_password)
+      template_id = zbx.get_template_id("Template_Linux")
+      template_id.should eq("10001")
+    end
+
+    it "should return nil for no template found" do
+      FakeWeb.allow_net_connect = true
+
+      zbx = Zabbix::ZabbixApi.new(@api_url, @api_login, @api_password)
+      template_id = zbx.get_template_id("not there")
+      template_id.should be_nil
+    end
+
+  end
+
+  context 'get group' do
+    it "should get a group" do
+      FakeWeb.allow_net_connect = true
+
+      zbx = Zabbix::ZabbixApi.new(@api_url, @api_login, @api_password)
+      group_id = zbx.get_group_id("Linux servers")
+      group_id.should eq("2")
+    end
+
+    it "should return nil for no group found" do
+      FakeWeb.allow_net_connect = true
+
+      zbx = Zabbix::ZabbixApi.new(@api_url, @api_login, @api_password)
+      group_id = zbx.get_group_id("not there")
+      group_id.should be_nil
+    end
+
   end
 
 end

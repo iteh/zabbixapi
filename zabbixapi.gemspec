@@ -4,7 +4,7 @@ $:.push File.expand_path("../lib", __FILE__)
 require "zabbixapi/version"
 
 Gem::Specification.new do |s|
-  s.name        = "zabbixapi"
+  s.name        = "iteh-zabbixapi"
   s.version     = Zabbix::VERSION
   s.authors     = ['Eduard Snesarev',"Edmund Haselwanter"]
   s.email       = ['verm666@gmail.com',"edmund@haselwanter.com"]
@@ -28,7 +28,8 @@ Gem::Specification.new do |s|
 #  s.add_dependency 'httparty', '~> 0.7.8'
 #  s.add_dependency 'activesupport', '~> 3.0.8'
 #  s.add_dependency "i18n", "~> 0.6.0"
-  s.add_dependency 'yajl-ruby', '~> 0.8.2'
+#  s.add_dependency 'yajl-ruby', '~> 0.8.2'
+  s.add_dependency "json", ">= 1.4.4", "<= 1.5.2"
   s.add_dependency "awesome_print", "~> 0.4.0"
 #  s.add_dependency "mixlib-cli", "~> 1.2.0"
 
