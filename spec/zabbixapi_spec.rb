@@ -38,8 +38,8 @@ describe Zabbix::ZabbixApi do
       RecordHttp.perform_save = false
       FakeWeb.allow_net_connect = false
 
-      @api_url = "http://192.168.1.29/login_success_user.authenticate.txt"
-      zbx = Zabbix::ZabbixApi.new(@api_url, @api_login, @api_password)
+      api_url = "http://192.168.1.29/login_success_user.authenticate.txt"
+      zbx = Zabbix::ZabbixApi.new(api_url, @api_login, @api_password)
       zbx.auth.should_not be_nil
     end
 
@@ -48,9 +48,9 @@ describe Zabbix::ZabbixApi do
       RecordHttp.perform_save = false
       FakeWeb.allow_net_connect = false
 
-      @api_url = "http://192.168.1.29/failed_auth_wrong_password_user.authenticate.txt"
-      @api_login = "wrong_user"
-      zbx = Zabbix::ZabbixApi.new(@api_url, @api_login, @api_password)
+      api_url = "http://192.168.1.29/failed_auth_wrong_password_user.authenticate.txt"
+      api_login = "wrong_user"
+      zbx = Zabbix::ZabbixApi.new(api_url, api_login, @api_password)
       lambda { zbx.auth}.should raise_error(Zabbix::AuthError)
     end
 
@@ -102,7 +102,7 @@ describe Zabbix::ZabbixApi do
         "useip" => 1,
         "dns" => "myhost.com",
         "groups" => [2],
-        "templates" => [10001]
+        "templates" => [10001,10049]
       }
       zbx = Zabbix::ZabbixApi.new(@api_url, @api_login, @api_password)
 
@@ -118,6 +118,7 @@ describe Zabbix::ZabbixApi do
   context 'get template' do
     it "should get a template" do
       FakeWeb.allow_net_connect = true
+      @api_url = "http://192.168.1.29/zabbix/api_jsonrpc.php"
 
       zbx = Zabbix::ZabbixApi.new(@api_url, @api_login, @api_password)
       template_id = zbx.get_template_id("Template_Linux")

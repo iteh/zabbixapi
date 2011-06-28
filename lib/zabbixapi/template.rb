@@ -89,7 +89,10 @@ module Zabbix
       }
 
       response = send_request(message)
-      (response.is_a?(Array) && response.first.is_a?(Hash)) ? response.first["templateid"] : nil
+      result = nil
+      result = response.first["templateid"] if (response.is_a?(Array) && response.first.is_a?(Hash)) # API > 1.8.3
+      result = response[response.keys.first]["templateid"] if (response.is_a?(Hash) && response[response.keys.first].is_a?(Hash)) # API <= 1.8.3
+      result
     end
 
     def link_templates_with_hosts(templates_id, hosts_id)
